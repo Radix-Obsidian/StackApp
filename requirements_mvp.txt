@@ -1,0 +1,36 @@
+# StackApp MVP Requirements
+# Core FastAPI and web framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+
+# FinRobot core components (streamlined)
+pyautogen>=0.2.19
+autogen-agentchat>=0.2.0
+
+# Financial data sources (essential only)
+finnhub-python>=2.4.0
+yfinance>=0.2.18
+requests>=2.31.0
+
+# Data handling
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Optional: For enhanced features
+# matplotlib>=3.7.0  # For charts
+# mplfinance>=0.12.0  # For financial charts
+# reportlab>=4.0.0  # For PDF generation
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+httpx>=0.25.0  # For testing FastAPI
+
+# Environment and configuration
+python-dotenv>=1.0.0
+python-multipart>=0.0.6  # For file uploads if needed
+
+# Hugging Face for free AI models
+huggingface_hub>=0.20.0
+transformers>=4.35.0

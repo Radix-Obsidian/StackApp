@@ -1,5 +1,8 @@
 {
     "python.analysis.extraPaths": [
         "./FinNLP"
+    ],
+    "cursorpyright.analysis.extraPaths": [
+        "./FinNLP"
     ]
 }

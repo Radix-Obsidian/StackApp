@@ -1,0 +1,994 @@
+openapi: 3.1.0
+info:
+  title: StackApp API
+  description: |
+    # 🎤 StackApp - The Black Community's Financial Powerhouse
+    
+    **"Stack Your Bread, Stack Your Future"**
+    
+    StackApp is a revolutionary financial platform designed specifically for the Black community, combining authentic cultural voice with cutting-edge AI technology to provide personalized financial guidance and wealth-building strategies.
+    
+    ## 🆓 FREE TIER - Qwen AI Model
+    - **No API keys required**
+    - **Real AI responses** using Qwen/Qwen2.5-7B-Instruct
+    - **Authentic Stack Master personality** - culturally aware financial coaching
+    - **Core financial advice** - investment, credit, savings guidance
+    - **Community features** - challenges, success stories, education
+    
+    ## 💎 PREMIUM TIER - FinRobot Agents ($9.99 Beta)
+    - **Advanced FinRobot agents** - professional-grade financial analysis
+    - **Real-time market data** - live financial information
+    - **Personalized strategies** - custom investment plans
+    - **Priority support** - dedicated assistance
+    
+    ## 🎯 Revenue Model
+    - **Free users**: Qwen AI model with full Stack Master personality
+    - **Premium users**: FinRobot agents with advanced analysis capabilities
+    - **Beta pricing**: $9.99/month for early adopters
+    
+    ## 🚀 Getting Started
+    1. **No registration required** for free tier
+    2. **Start chatting** with The Stack Master immediately
+    3. **Upgrade to premium** for advanced FinRobot features
+    4. **Build wealth** with culturally-aware financial guidance
+    
+    ## 🎤 The Stack Master
+    Your AI financial coach with authentic Black community voice, providing real talk financial advice that resonates with the culture while delivering professional-grade guidance.
+    
+  version: 1.0.0-MVP-FREE-HF
+  contact:
+    name: StackApp Support
+    email: support@stackapp.com
+    url: https://stackapp.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://stackapp.com/terms
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.stackapp.com
+    description: Production server
+
+tags:
+  - name: Stack Master
+    description: The AI financial coach for the Black community
+  - name: Premium
+    description: FinRobot agents and advanced features (Beta $9.99)
+  - name: Investment
+    description: Investment advice and analysis
+  - name: Credit
+    description: Credit building and improvement
+  - name: Community
+    description: Community challenges and features
+  - name: Education
+    description: Financial education and resources
+  - name: Subscription
+    description: Subscription plans and pricing
+
+paths:
+  /:
+    get:
+      tags:
+        - Stack Master
+      summary: Get API information
+      description: Returns basic information about the StackApp API and its capabilities
+      operationId: getApiInfo
+      responses:
+        '200':
+          description: API information retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  app:
+                    type: string
+                    example: "StackApp"
+                  tagline:
+                    type: string
+                    example: "Stack Your Bread, Stack Your Future"
+                  version:
+                    type: string
+                    example: "1.0.0-MVP-FREE-HF"
+                  ai_coach:
+                    type: string
+                    example: "The Stack Master"
+                  status:
+                    type: string
+                    example: "ready"
+                  message:
+                    type: string
+                    example: "StackApp FREE API is ready to help you stack your bread! 💰"
+                  cost:
+                    type: string
+                    example: "FREE - No API keys required!"
+                  ai_provider:
+                    type: string
+                    example: "Hugging Face Free Models"
+              examples:
+                success:
+                  summary: Successful API info response
+                  value:
+                    app: "StackApp"
+                    tagline: "Stack Your Bread, Stack Your Future"
+                    version: "1.0.0-MVP-FREE-HF"
+                    ai_coach: "The Stack Master"
+                    status: "ready"
+                    message: "StackApp FREE API is ready to help you stack your bread! 💰"
+                    cost: "FREE - No API keys required!"
+                    ai_provider: "Hugging Face Free Models"
+
+  /health:
+    get:
+      tags:
+        - Stack Master
+      summary: Health check
+      description: Check if the API is running and healthy
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2024-01-15T10:30:00Z"
+              examples:
+                healthy:
+                  summary: API is healthy
+                  value:
+                    status: "healthy"
+                    timestamp: "2024-01-15T10:30:00Z"
+
+  /stack-master/chat:
+    post:
+      tags:
+        - Stack Master
+      summary: Chat with The Stack Master
+      description: |
+        Chat with The Stack Master AI Coach using the free Qwen model. 
+        Get authentic, culturally-aware financial advice with no API keys required.
+        
+        **Free Tier Features:**
+        - Real AI responses using Qwen/Qwen2.5-7B-Instruct
+        - Authentic Black community voice and personality
+        - Personalized financial advice
+        - Actionable steps and motivational messages
+      operationId: chatWithStackMaster
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StackMasterMessage'
+            examples:
+              investment_question:
+                summary: Investment advice request
+                value:
+                  user_id: "user123"
+                  message: "I want to start investing but I only have $50 a month. What should I do?"
+                  context:
+                    income: 3000
+                    savings: 200
+                    risk_tolerance: "conservative"
+              credit_question:
+                summary: Credit building request
+                value:
+                  user_id: "user456"
+                  message: "My credit score is 580. How can I improve it quickly?"
+                  context:
+                    credit_score: 580
+                    monthly_income: 2500
+                    current_debt: 5000
+              general_question:
+                summary: General financial advice
+                value:
+                  user_id: "user789"
+                  message: "I'm 25 and want to build wealth. Where do I start?"
+                  context:
+                    age: 25
+                    income: 4000
+                    savings: 1000
+      responses:
+        '200':
+          description: Successful response from The Stack Master
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StackMasterResponse'
+              examples:
+                investment_response:
+                  summary: Investment advice response
+                  value:
+                    response: "Real talk - let's break this down. First step is tracking every dollar. You can't stack what you can't see. Start with the 50/30/20 rule: 50% needs, 30% wants, 20% wealth building. Investing $50 a month can turn into $50k over time. Compound interest is how the rich stay rich. Time to join the club."
+                    advice_type: "investment"
+                    actionable_steps:
+                      - "Start with $25/month in an index fund"
+                      - "Research low-cost ETFs like VTI or SPY"
+                      - "Set up automatic transfers to your investment account"
+                    motivational_message: "Your future self will thank you for starting today!"
+                credit_response:
+                  summary: Credit building response
+                  value:
+                    response: "Your credit score is your power score. Every payment on time is money in the bank. Let's get you to 750+ and unlock real wealth opportunities. Credit is power - let's build yours!"
+                    advice_type: "credit"
+                    actionable_steps:
+                      - "Pay all bills on time, every time"
+                      - "Keep credit card balances below 30% of limit"
+                      - "Check your credit report monthly"
+                    motivational_message: "Every payment on time is money in your pocket!"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                server_error:
+                  summary: Server error
+                  value:
+                    detail: "Error chatting with Stack Master: Connection timeout"
+
+  /stack-master/analyze-stack:
+    post:
+      tags:
+        - Stack Master
+      summary: Analyze financial stack
+      description: |
+        Get a comprehensive analysis of your current financial situation with personalized recommendations.
+        Uses the free Qwen model to provide culturally-aware financial guidance.
+      operationId: analyzeFinancialStack
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StackAnalysisRequest'
+            examples:
+              basic_analysis:
+                summary: Basic financial analysis
+                value:
+                  user_id: "user123"
+                  current_income: 3000
+                  current_savings: 500
+                  monthly_expenses: 2200
+                  credit_score: 650
+                  investment_goals: ["emergency fund", "retirement"]
+                  risk_tolerance: "moderate"
+              minimal_analysis:
+                summary: Minimal information analysis
+                value:
+                  user_id: "user456"
+                  current_income: 2500
+                  risk_tolerance: "conservative"
+      responses:
+        '200':
+          description: Financial analysis completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    example: "user123"
+                  analysis:
+                    type: string
+                    example: "Yo, let me break down your financial stack: Current Income: $3000, Current Savings: $500, Monthly Expenses: $2200, Credit Score: 650. Here's what I see: First priority: build that emergency fund to $500. That's your foundation."
+                  recommendations:
+                    type: object
+                    properties:
+                      immediate_actions:
+                        type: array
+                        items:
+                          type: string
+                        example: ["Build emergency fund", "Pay bills on time", "Track spending"]
+                      short_term_goals:
+                        type: array
+                        items:
+                          type: string
+                        example: ["Save $500", "Improve credit score", "Start investing $25/month"]
+                      long_term_strategies:
+                        type: array
+                        items:
+                          type: string
+                        example: ["Build wealth through investments", "Create multiple income streams"]
+                  stack_score:
+                    type: number
+                    format: float
+                    example: 7.2
+                  motivational_message:
+                    type: string
+                    example: "Time to stack your bread and build your future! 💰"
+              examples:
+                analysis_result:
+                  summary: Financial analysis result
+                  value:
+                    user_id: "user123"
+                    analysis: "Yo, let me break down your financial stack: Current Income: $3000, Current Savings: $500, Monthly Expenses: $2200, Credit Score: 650. Here's what I see: First priority: build that emergency fund to $500. That's your foundation."
+                    recommendations:
+                      immediate_actions: ["Build emergency fund", "Pay bills on time", "Track spending"]
+                      short_term_goals: ["Save $500", "Improve credit score", "Start investing $25/month"]
+                      long_term_strategies: ["Build wealth through investments", "Create multiple income streams"]
+                    stack_score: 7.2
+                    motivational_message: "Time to stack your bread and build your future! 💰"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /premium/finrobot-agents:
+    post:
+      tags:
+        - Premium
+      summary: Access FinRobot agents
+      description: |
+        Access advanced FinRobot agents for professional-grade financial analysis.
+        **Requires $9.99 beta subscription.**
+        
+        **Premium Features:**
+        - Equity Research Agent
+        - Portfolio Optimization Agent
+        - Risk Assessment Agent
+        - Market Analysis Agent
+      operationId: accessFinRobotAgents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PremiumUserRequest'
+            examples:
+              premium_user:
+                summary: Premium user request
+                value:
+                  user_id: "premium_user123"
+                  subscription_tier: "beta"
+                  payment_verified: true
+              free_user:
+                summary: Free user attempting premium access
+                value:
+                  user_id: "free_user456"
+                  subscription_tier: "free"
+                  payment_verified: false
+      responses:
+        '200':
+          description: FinRobot agents accessed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Welcome to FinRobot Premium! 🚀"
+                  available_agents:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Equity Research Agent", "Portfolio Optimization Agent", "Risk Assessment Agent", "Market Analysis Agent"]
+                  subscription_tier:
+                    type: string
+                    example: "beta"
+                  beta_price:
+                    type: string
+                    example: "$9.99/month"
+                  features_unlocked:
+                    type: boolean
+                    example: true
+              examples:
+                premium_access:
+                  summary: Premium access granted
+                  value:
+                    message: "Welcome to FinRobot Premium! 🚀"
+                    available_agents: ["Equity Research Agent", "Portfolio Optimization Agent", "Risk Assessment Agent", "Market Analysis Agent"]
+                    subscription_tier: "beta"
+                    beta_price: "$9.99/month"
+                    features_unlocked: true
+        '402':
+          description: Payment required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+              examples:
+                payment_required:
+                  summary: Payment required for premium features
+                  value:
+                    error: "Payment required"
+                    message: "FinRobot agents require $9.99 beta subscription"
+                    upgrade_url: "/upgrade-to-premium"
+                    features: ["Advanced FinRobot agents", "Real-time market analysis", "Personalized investment strategies", "Priority support"]
+
+  /premium/advanced-analysis:
+    post:
+      tags:
+        - Premium
+      summary: Advanced financial analysis
+      description: |
+        Get advanced financial analysis using FinRobot agents.
+        **Requires $9.99 beta subscription.**
+      operationId: advancedFinancialAnalysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PremiumUserRequest'
+      responses:
+        '200':
+          description: Advanced analysis completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Advanced FinRobot analysis unlocked! 💰"
+                  analysis_type:
+                    type: string
+                    example: "Premium FinRobot Analysis"
+                  features:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Multi-factor analysis", "Real-time market data", "Advanced portfolio optimization", "Risk-adjusted returns"]
+        '402':
+          description: Payment required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+
+  /subscription/plans:
+    get:
+      tags:
+        - Subscription
+      summary: Get subscription plans
+      description: |
+        Get available subscription plans and pricing information.
+        
+        **Plans Available:**
+        - **Free**: Qwen AI model, basic features
+        - **Beta**: $9.99/month - FinRobot agents, advanced features
+        - **Premium**: $29.99/month - Full feature access
+      operationId: getSubscriptionPlans
+      responses:
+        '200':
+          description: Subscription plans retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  plans:
+                    type: object
+                    properties:
+                      free:
+                        $ref: '#/components/schemas/SubscriptionPlan'
+                      beta:
+                        $ref: '#/components/schemas/SubscriptionPlan'
+                      premium:
+                        $ref: '#/components/schemas/SubscriptionPlan'
+              examples:
+                plans:
+                  summary: Available subscription plans
+                  value:
+                    plans:
+                      free:
+                        price: "$0"
+                        features: ["Qwen AI Stack Master", "Basic financial advice", "Community features", "Educational content"]
+                        ai_model: "Qwen/Qwen2.5-7B-Instruct"
+                      beta:
+                        price: "$9.99/month"
+                        features: ["Everything in Free", "FinRobot agents access", "Advanced market analysis", "Personalized strategies", "Priority support"]
+                        ai_models: ["Qwen/Qwen2.5-7B-Instruct (Free)", "FinRobot Agents (Premium)"]
+                        popular: true
+                      premium:
+                        price: "$29.99/month"
+                        features: ["Everything in Beta", "Real-time market data", "Advanced portfolio tools", "1-on-1 coaching sessions"]
+
+  /investment/advice:
+    post:
+      tags:
+        - Investment
+      summary: Get investment advice
+      description: |
+        Get personalized investment advice using the free Qwen AI model.
+        Provides culturally-aware investment guidance with actionable steps.
+      operationId: getInvestmentAdvice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StackMasterMessage'
+            examples:
+              investment_question:
+                summary: Investment advice request
+                value:
+                  user_id: "user123"
+                  message: "I want to start investing in stocks but I'm scared of losing money"
+                  context:
+                    risk_tolerance: "conservative"
+                    investment_amount: 100
+      responses:
+        '200':
+          description: Investment advice provided successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  advice:
+                    type: string
+                    example: "Real talk - let's break this down. First step is tracking every dollar. You can't stack what you can't see. Start with the 50/30/20 rule: 50% needs, 30% wants, 20% wealth building."
+                  tier:
+                    type: string
+                    example: "free"
+                  ai_model:
+                    type: string
+                    example: "Qwen/Qwen2.5-7B-Instruct"
+                  upgrade_message:
+                    type: string
+                    example: "Want FinRobot agents? Upgrade to $9.99 beta!"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /credit/building-plan:
+    post:
+      tags:
+        - Credit
+      summary: Create credit building plan
+      description: |
+        Create a personalized credit building plan using the free Qwen AI model.
+        Provides step-by-step guidance to improve credit scores.
+      operationId: createCreditPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StackMasterMessage'
+            examples:
+              credit_question:
+                summary: Credit building request
+                value:
+                  user_id: "user456"
+                  message: "My credit score is 580 and I want to get it to 700+"
+                  context:
+                    current_credit_score: 580
+                    monthly_income: 2500
+      responses:
+        '200':
+          description: Credit building plan created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  plan:
+                    type: string
+                    example: "Your credit score is your power score. Every payment on time is money in the bank. Let's get you to 750+ and unlock real wealth opportunities."
+                  tier:
+                    type: string
+                    example: "free"
+                  ai_model:
+                    type: string
+                    example: "Qwen/Qwen2.5-7B-Instruct"
+                  upgrade_message:
+                    type: string
+                    example: "Want advanced FinRobot credit analysis? Upgrade to $9.99 beta!"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /community/stack-challenges:
+    get:
+      tags:
+        - Community
+      summary: Get community challenges
+      description: |
+        Get available community challenges for financial growth.
+        Includes both free and premium challenges.
+      operationId: getStackChallenges
+      responses:
+        '200':
+          description: Community challenges retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  challenges:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Challenge'
+                  premium_challenges:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Challenge'
+              examples:
+                challenges:
+                  summary: Available challenges
+                  value:
+                    challenges:
+                      - title: "30-Day Emergency Fund Challenge"
+                        description: "Build a $500 emergency fund in 30 days"
+                        reward: "Financial security foundation"
+                        tier: "free"
+                      - title: "Credit Score Boost Challenge"
+                        description: "Increase your credit score by 50 points"
+                        reward: "Better loan rates and opportunities"
+                        tier: "free"
+                    premium_challenges:
+                      - title: "Advanced Portfolio Challenge"
+                        description: "Build a diversified investment portfolio"
+                        reward: "FinRobot portfolio optimization"
+                        tier: "premium"
+                        price: "$9.99"
+
+  /education/topics:
+    get:
+      tags:
+        - Education
+      summary: Get education topics
+      description: |
+        Get available financial education topics and resources.
+        Includes both free and premium educational content.
+      operationId: getEducationTopics
+      responses:
+        '200':
+          description: Education topics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topics:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EducationTopic'
+                  premium_topics:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EducationTopic'
+              examples:
+                topics:
+                  summary: Available education topics
+                  value:
+                    topics:
+                      - title: "Building Your First Emergency Fund"
+                        description: "Learn how to build financial security"
+                        tier: "free"
+                        ai_model: "Qwen"
+                      - title: "Understanding Credit Scores"
+                        description: "Master your credit and unlock opportunities"
+                        tier: "free"
+                        ai_model: "Qwen"
+                    premium_topics:
+                      - title: "Advanced Investment Strategies"
+                        description: "FinRobot-powered investment analysis"
+                        tier: "premium"
+                        ai_model: "FinRobot"
+                        price: "$9.99"
+
+components:
+  schemas:
+    StackMasterMessage:
+      type: object
+      required:
+        - user_id
+        - message
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier for the user
+          example: "user123"
+        message:
+          type: string
+          description: The message to send to The Stack Master
+          example: "I want to start investing but I only have $50 a month. What should I do?"
+        context:
+          type: object
+          description: Additional context about the user's financial situation
+          additionalProperties: true
+          example:
+            income: 3000
+            savings: 200
+            risk_tolerance: "conservative"
+      example:
+        user_id: "user123"
+        message: "I want to start investing but I only have $50 a month. What should I do?"
+        context:
+          income: 3000
+          savings: 200
+          risk_tolerance: "conservative"
+
+    StackMasterResponse:
+      type: object
+      required:
+        - response
+        - advice_type
+      properties:
+        response:
+          type: string
+          description: The Stack Master's response to the user's message
+          example: "Real talk - let's break this down. First step is tracking every dollar. You can't stack what you can't see. Start with the 50/30/20 rule: 50% needs, 30% wants, 20% wealth building."
+        advice_type:
+          type: string
+          enum: [general, investment, credit, savings, community, education]
+          description: The type of financial advice provided
+          example: "investment"
+        actionable_steps:
+          type: array
+          items:
+            type: string
+          description: Specific steps the user can take
+          example: ["Start with $25/month in an index fund", "Research low-cost ETFs like VTI or SPY", "Set up automatic transfers to your investment account"]
+        motivational_message:
+          type: string
+          description: Motivational message to encourage the user
+          example: "Your future self will thank you for starting today!"
+      example:
+        response: "Real talk - let's break this down. First step is tracking every dollar. You can't stack what you can't see. Start with the 50/30/20 rule: 50% needs, 30% wants, 20% wealth building."
+        advice_type: "investment"
+        actionable_steps: ["Start with $25/month in an index fund", "Research low-cost ETFs like VTI or SPY", "Set up automatic transfers to your investment account"]
+        motivational_message: "Your future self will thank you for starting today!"
+
+    StackAnalysisRequest:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier for the user
+          example: "user123"
+        current_income:
+          type: number
+          format: float
+          description: User's current monthly income
+          example: 3000
+        current_savings:
+          type: number
+          format: float
+          description: User's current savings amount
+          example: 500
+        monthly_expenses:
+          type: number
+          format: float
+          description: User's monthly expenses
+          example: 2200
+        credit_score:
+          type: integer
+          minimum: 300
+          maximum: 850
+          description: User's current credit score
+          example: 650
+        investment_goals:
+          type: array
+          items:
+            type: string
+          description: User's investment goals
+          example: ["emergency fund", "retirement", "house down payment"]
+        risk_tolerance:
+          type: string
+          enum: [conservative, moderate, aggressive]
+          description: User's risk tolerance for investments
+          example: "moderate"
+      example:
+        user_id: "user123"
+        current_income: 3000
+        current_savings: 500
+        monthly_expenses: 2200
+        credit_score: 650
+        investment_goals: ["emergency fund", "retirement"]
+        risk_tolerance: "moderate"
+
+    PremiumUserRequest:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier for the user
+          example: "premium_user123"
+        subscription_tier:
+          type: string
+          enum: [free, beta, premium, enterprise]
+          description: User's subscription tier
+          example: "beta"
+        payment_verified:
+          type: boolean
+          description: Whether the user's payment has been verified
+          example: true
+      example:
+        user_id: "premium_user123"
+        subscription_tier: "beta"
+        payment_verified: true
+
+    SubscriptionPlan:
+      type: object
+      required:
+        - price
+        - features
+      properties:
+        price:
+          type: string
+          description: The price of the subscription plan
+          example: "$9.99/month"
+        features:
+          type: array
+          items:
+            type: string
+          description: Features included in the plan
+          example: ["Everything in Free", "FinRobot agents access", "Advanced market analysis", "Personalized strategies", "Priority support"]
+        ai_model:
+          type: string
+          description: AI model used in the plan
+          example: "Qwen/Qwen2.5-7B-Instruct"
+        ai_models:
+          type: array
+          items:
+            type: string
+          description: AI models used in the plan
+          example: ["Qwen/Qwen2.5-7B-Instruct (Free)", "FinRobot Agents (Premium)"]
+        popular:
+          type: boolean
+          description: Whether this is the most popular plan
+          example: true
+      example:
+        price: "$9.99/month"
+        features: ["Everything in Free", "FinRobot agents access", "Advanced market analysis", "Personalized strategies", "Priority support"]
+        ai_models: ["Qwen/Qwen2.5-7B-Instruct (Free)", "FinRobot Agents (Premium)"]
+        popular: true
+
+    Challenge:
+      type: object
+      required:
+        - title
+        - description
+        - reward
+        - tier
+      properties:
+        title:
+          type: string
+          description: The title of the challenge
+          example: "30-Day Emergency Fund Challenge"
+        description:
+          type: string
+          description: Description of the challenge
+          example: "Build a $500 emergency fund in 30 days"
+        reward:
+          type: string
+          description: Reward for completing the challenge
+          example: "Financial security foundation"
+        tier:
+          type: string
+          enum: [free, premium]
+          description: The tier required for the challenge
+          example: "free"
+        price:
+          type: string
+          description: Price for premium challenges
+          example: "$9.99"
+      example:
+        title: "30-Day Emergency Fund Challenge"
+        description: "Build a $500 emergency fund in 30 days"
+        reward: "Financial security foundation"
+        tier: "free"
+
+    EducationTopic:
+      type: object
+      required:
+        - title
+        - description
+        - tier
+        - ai_model
+      properties:
+        title:
+          type: string
+          description: The title of the education topic
+          example: "Building Your First Emergency Fund"
+        description:
+          type: string
+          description: Description of the education topic
+          example: "Learn how to build financial security"
+        tier:
+          type: string
+          enum: [free, premium]
+          description: The tier required for the topic
+          example: "free"
+        ai_model:
+          type: string
+          enum: [Qwen, FinRobot]
+          description: The AI model used for the topic
+          example: "Qwen"
+        price:
+          type: string
+          description: Price for premium topics
+          example: "$9.99"
+      example:
+        title: "Building Your First Emergency Fund"
+        description: "Learn how to build financial security"
+        tier: "free"
+        ai_model: "Qwen"
+
+    ErrorResponse:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: Error message describing what went wrong
+          example: "Error chatting with Stack Master: Connection timeout"
+      example:
+        detail: "Error chatting with Stack Master: Connection timeout"
+
+    PaymentRequiredResponse:
+      type: object
+      required:
+        - error
+        - message
+        - upgrade_url
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "Payment required"
+        message:
+          type: string
+          description: Error message
+          example: "FinRobot agents require $9.99 beta subscription"
+        upgrade_url:
+          type: string
+          description: URL to upgrade subscription
+          example: "/upgrade-to-premium"
+        features:
+          type: array
+          items:
+            type: string
+          description: Features available with upgrade
+          example: ["Advanced FinRobot agents", "Real-time market analysis", "Personalized investment strategies", "Priority support"]
+      example:
+        error: "Payment required"
+        message: "FinRobot agents require $9.99 beta subscription"
+        upgrade_url: "/upgrade-to-premium"
+        features: ["Advanced FinRobot agents", "Real-time market analysis", "Personalized investment strategies", "Priority support"]
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for premium features (not required for free tier)
+
+security:
+  - {}  # No authentication required for free tier
+  - ApiKeyAuth: []  # API key required for premium features
+
+externalDocs:
+  description: StackApp Documentation
+  url: https://docs.stackapp.com

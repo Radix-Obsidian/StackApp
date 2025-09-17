@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "StackApp",
+    "tagline": "Stack Your Bread, Stack Your Future",
+    "version": "1.0.0-MVP",
+    "description": "The Black Community's Financial Powerhouse"
+  },
+  "ai_coach": {
+    "name": "The Stack Master",
+    "personality": "Real talk, street smart, culturally aware",
+    "expertise": [
+      "Investment strategies for building wealth",
+      "Credit building and repair", 
+      "Budgeting and saving techniques",
+      "Business and entrepreneurship",
+      "Real estate investment",
+      "Financial education and literacy"
+    ]
+  },
+  "features": {
+    "core": [
+      "AI Financial Coach (Stack Master)",
+      "Investment Analysis",
+      "Credit Building Guidance", 
+      "Financial Education",
+      "Community Challenges",
+      "Success Stories"
+    ],
+    "mvp_priorities": [
+      "Stack Master chat",
+      "Basic investment advice",
+      "Credit building plans",
+      "Community features",
+      "Financial education content"
+    ]
+  },
+  "api": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "cors_origins": ["*"],
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 60
+    }
+  },
+  "integrations": {
+    "finnhub": {
+      "enabled": true,
+      "description": "Stock market data and company information"
+    },
+    "yfinance": {
+      "enabled": true, 
+      "description": "Historical stock data and market information"
+    },
+    "openai": {
+      "enabled": true,
+      "description": "AI language model for Stack Master"
+    }
+  },
+  "community": {
+    "challenges": [
+      {
+        "id": "30-day-save",
+        "name": "30-Day Stack Challenge",
+        "description": "Save $100 in 30 days",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "credit-boost", 
+        "name": "Credit Boost Challenge",
+        "description": "Improve credit score by 50 points in 6 months",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "investment-start",
+        "name": "First Investment Challenge", 
+        "description": "Make your first $100 investment",
+        "difficulty": "Beginner"
+      }
+    ]
+  },
+  "branding": {
+    "colors": {
+      "primary": "#1a1a1a",
+      "secondary": "#ffd700", 
+      "accent": "#00ff00"
+    },
+    "slogans": [
+      "Stack Your Bread, Stack Your Future",
+      "From the Block to the Boardroom", 
+      "We Don't Just Move Money, We Stack It",
+      "Your Money, Your Power, Your Stack",
+      "Stack Up, Level Up, Flow Up"
+    ]
+  }
+}

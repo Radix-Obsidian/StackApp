@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 StackApp API Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .tagline {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .hero {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .tier-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tier-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tier-card.free {
+            border-top: 4px solid #10b981;
+        }
+        
+        .tier-card.premium {
+            border-top: 4px solid #f59e0b;
+            position: relative;
+        }
+        
+        .tier-card.premium::before {
+            content: "POPULAR";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .tier-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .tier-card .price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .tier-card.free .price {
+            color: #10b981;
+        }
+        
+        .tier-card.premium .price {
+            color: #f59e0b;
+        }
+        
+        .tier-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+        
+        .tier-card li {
+            padding: 0.5rem 0;
+            color: #666;
+        }
+        
+        .tier-card li::before {
+            content: "✅";
+            margin-right: 0.5rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .features {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .features h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .feature p {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .api-docs {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .api-docs h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+        
+        .endpoint {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+        }
+        
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .method {
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .method.get {
+            background: #10b981;
+            color: white;
+        }
+        
+        .method.post {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .endpoint-description {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .footer .tagline {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .hero, .features, .api-docs {
+                padding: 2rem;
+            }
+            
+            .tiers {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎤 StackApp API</h1>
+        <p class="tagline">The Black Community's Financial Powerhouse</p>
+    </div>
+    
+    <div class="container">
+        <div class="hero">
+            <h2>Stack Your Bread, Stack Your Future</h2>
+            <p>
+                StackApp is a revolutionary financial platform designed specifically for the Black community, 
+                combining authentic cultural voice with cutting-edge AI technology to provide personalized 
+                financial guidance and wealth-building strategies.
+            </p>
+            <div class="cta-buttons">
+                <a href="#api-docs" class="btn btn-primary">
+                    📚 View API Documentation
+                </a>
+                <a href="http://localhost:8000/docs" class="btn btn-secondary" target="_blank">
+                    🚀 Try It Out
+                </a>
+            </div>
+        </div>
+        
+        <div class="tiers">
+            <div class="tier-card free">
+                <h3>🆓 FREE TIER</h3>
+                <div class="price">$0</div>
+                <ul>
+                    <li>Qwen AI Stack Master</li>
+                    <li>Real AI responses</li>
+                    <li>Authentic cultural voice</li>
+                    <li>Basic financial advice</li>
+                    <li>Community features</li>
+                    <li>Educational content</li>
+                    <li>No API keys required</li>
+                </ul>
+            </div>
+            
+            <div class="tier-card premium">
+                <h3>💎 PREMIUM TIER</h3>
+                <div class="price">$9.99/month</div>
+                <ul>
+                    <li>Everything in Free</li>
+                    <li>FinRobot agents access</li>
+                    <li>Advanced market analysis</li>
+                    <li>Personalized strategies</li>
+                    <li>Priority support</li>
+                    <li>Real-time data</li>
+                    <li>Professional-grade analysis</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>🎯 Key Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Coaching</h3>
+                    <p>Get personalized financial advice from The Stack Master, an AI coach with authentic Black community voice and cultural awareness.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h3>Investment Guidance</h3>
+                    <p>Receive culturally-aware investment advice that resonates with your community while providing professional-grade financial guidance.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📈</div>
+                    <h3>Credit Building</h3>
+                    <p>Get step-by-step credit improvement plans with actionable strategies to boost your credit score and unlock wealth opportunities.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Community Challenges</h3>
+                    <p>Join community challenges and educational programs designed to build financial literacy and wealth-building habits.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Premium FinRobot</h3>
+                    <p>Access advanced FinRobot agents for professional-grade financial analysis, real-time market data, and personalized strategies.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <h3>Easy Integration</h3>
+                    <p>Simple REST API with comprehensive documentation, code examples, and interactive testing tools for seamless integration.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="api-docs" id="api-docs">
+            <h2>📚 API Endpoints</h2>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/</span>
+                </div>
+                <div class="endpoint-description">
+                    Get basic API information and status. No authentication required.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/stack-master/chat</span>
+                </div>
+                <div class="endpoint-description">
+                    Chat with The Stack Master AI Coach. Get personalized financial advice with authentic cultural voice. Free tier uses Qwen model.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/stack-master/analyze-stack</span>
+                </div>
+                <div class="endpoint-description">
+                    Get comprehensive financial analysis with personalized recommendations. Uses free Qwen model for culturally-aware guidance.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/premium/finrobot-agents</span>
+                </div>
+                <div class="endpoint-description">
+                    Access advanced FinRobot agents for professional-grade financial analysis. Requires $9.99 beta subscription.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/subscription/plans</span>
+                </div>
+                <div class="endpoint-description">
+                    Get available subscription plans and pricing information. Compare free and premium tiers.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/investment/advice</span>
+                </div>
+                <div class="endpoint-description">
+                    Get personalized investment advice using the free Qwen AI model. Culturally-aware guidance with actionable steps.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/credit/building-plan</span>
+                </div>
+                <div class="endpoint-description">
+                    Create a personalized credit building plan using the free Qwen AI model. Step-by-step guidance to improve credit scores.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/community/stack-challenges</span>
+                </div>
+                <div class="endpoint-description">
+                    Get available community challenges for financial growth. Includes both free and premium challenges.
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/education/topics</span>
+                </div>
+                <div class="endpoint-description">
+                    Get available financial education topics and resources. Includes both free and premium educational content.
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Ready to start building your financial future?</p>
+            <div class="cta-buttons">
+                <a href="http://localhost:8000/docs" class="btn btn-primary" target="_blank">
+                    🚀 Interactive API Docs
+                </a>
+                <a href="http://localhost:8000/redoc" class="btn btn-secondary" target="_blank">
+                    📖 ReDoc Documentation
+                </a>
+            </div>
+            <p class="tagline">"From the block to the boardroom, we're stacking together."</p>
+        </div>
+    </div>
+    
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add some interactive effects
+        document.querySelectorAll('.tier-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
