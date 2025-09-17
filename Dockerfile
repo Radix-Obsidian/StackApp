@@ -10,9 +10,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
-COPY requirements.mvp.cloud.txt .
+COPY requirements.render.txt .
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.mvp.cloud.txt
+    pip install --no-cache-dir -r requirements.render.txt
 
 # Copy application code
 COPY finrobot/ ./finrobot/

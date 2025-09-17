@@ -12,7 +12,7 @@ from typing import Dict, List, Optional, Any
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import uvicorn
 from dotenv import load_dotenv
 import requests
