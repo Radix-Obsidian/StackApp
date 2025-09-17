@@ -1,0 +1,89 @@
+# Git
+.git
+.gitignore
+
+# Environment and secrets
+.env
+.env.*
+config_api_keys
+OAI_CONFIG_LIST
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Flutter/Dart (not needed in API container)
+mobile_app/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Experimental and development files
+experiments/
+tutorials_*/
+report/
+New Template/
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Documentation (not needed in container)
+*.md
+LICENSE
+
+# Tests (not needed in container)
+test_*.py
+
+# Other files not needed in container
+setup.py
+requirements.txt
+requirements_mvp.txt
+agent_builder_demo.py
+simple_stackapp_api.py
+simple_stackapp_api_mock.py
+stackapp_api.py
