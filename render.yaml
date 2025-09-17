@@ -1,0 +1,40 @@
+services:
+  # API Service
+  - type: web
+    name: stackapp-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.render.txt
+    startCommand: gunicorn stackapp_api_render:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.16
+      - key: STACKAPP_LLM_PROVIDER
+        value: huggingface
+      - key: HF_MODEL
+        value: Qwen/Qwen2.5-7B-Instruct
+      - key: HF_MODEL_FINANCIAL_ANALYST
+        value: Qwen/Qwen2.5-7B-Instruct
+      - key: HF_MODEL_MARKET_ANALYST
+        value: FinGPT/fingpt-forecaster_dow_30
+      - key: HF_MODEL_EXPERT_INVESTOR
+        value: microsoft/DialoGPT-medium
+      - key: HF_MODEL_ACCOUNTANT
+        value: EleutherAI/gpt-neo-2.7B
+      - key: STACKAPP_HOST
+        value: 0.0.0.0
+      - key: STACKAPP_CORS_ORIGINS
+        value: "*"
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: HF_TOKEN
+        sync: false
+      - key: FINNHUB_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: STACKAPP_API_KEY
+        sync: false
