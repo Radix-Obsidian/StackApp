@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../core/ui/cupertino_tokens.dart';
+import '../../../core/network/network_provider.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ChatInput extends StatefulWidget {
@@ -36,15 +40,13 @@ class _ChatInputState extends State<ChatInput> {
 
   @override
   Widget build(BuildContext context) {
+    final isOnline = context.watch<NetworkProvider>().isOnline;
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+      decoration: const BoxDecoration(
+        color: CupertinoTokens.background,
         border: Border(
-          top: BorderSide(
-            color: AppTheme.brightGold.withOpacity(0.3),
-            width: 1,
-          ),
+          top: BorderSide(color: CupertinoTokens.separator, width: 1),
         ),
       ),
       child: SafeArea(
@@ -53,63 +55,31 @@ class _ChatInputState extends State<ChatInput> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: CupertinoTokens.secondaryBackground,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: AppTheme.systemBlue.withOpacity(0.12),
-                    width: 1,
-                  ),
+                  border: Border.all(color: CupertinoTokens.separator, width: 1),
                 ),
-                child: TextField(
+                child: CupertinoTextField(
                   controller: _controller,
                   focusNode: _focusNode,
-                  enabled: !widget.isLoading,
+                  enabled: !widget.isLoading && isOnline,
                   maxLines: null,
                   textCapitalization: TextCapitalization.sentences,
-                  style: const TextStyle(
-                    color: AppTheme.black,
-                    fontSize: 16,
-                  ),
-                  decoration: const InputDecoration(
-                    hintText: 'Ask The Stack Master anything...',
-                    hintStyle: TextStyle(
-                      color: AppTheme.gray,
-                      fontSize: 16,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                  ),
+                  style: const TextStyle(color: CupertinoColors.black, fontSize: 16),
+                  placeholder: 'Ask The Stack Master anything...',
+                  placeholderStyle: const TextStyle(color: CupertinoColors.systemGrey, fontSize: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   onSubmitted: (_) => _sendMessage(),
                 ),
               ),
             ),
             const SizedBox(width: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: widget.isLoading 
-                    ? AppTheme.gray 
-                    : AppTheme.systemBlue,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: IconButton(
-                onPressed: widget.isLoading ? null : _sendMessage,
-                icon: widget.isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white),
-                        ),
-                      )
-                    : const Icon(
-                        Icons.send,
-                        color: AppTheme.white,
-                      ),
-              ),
+            CupertinoButton.filled(
+              onPressed: widget.isLoading || !isOnline ? null : _sendMessage,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: widget.isLoading
+                  ? const CupertinoActivityIndicator()
+                  : const Icon(CupertinoIcons.paperplane_fill),
             ),
           ],
         ),

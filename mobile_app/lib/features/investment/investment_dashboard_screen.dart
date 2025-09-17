@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/api/stackapp_api_client.dart';
 import '../../core/models/investment_models.dart';
+import 'package:provider/provider.dart';
+import '../../core/auth/auth_provider.dart';
 
 class InvestmentDashboardScreen extends StatefulWidget {
   const InvestmentDashboardScreen({super.key});
@@ -17,13 +20,38 @@ class _InvestmentDashboardScreenState extends State<InvestmentDashboardScreen> {
   String? _stockText;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Investment Dashboard'),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: AppTheme.black,
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: const Text('Investment Dashboard'),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () async {
+            final confirmed = await showCupertinoDialog<bool>(
+              context: context,
+              builder: (ctx) => CupertinoAlertDialog(
+                title: const Text('Logout'),
+                content: const Text('Are you sure you want to log out?'),
+                actions: [
+                  CupertinoDialogAction(
+                    onPressed: () => Navigator.pop(ctx, false),
+                    child: const Text('Cancel'),
+                  ),
+                  CupertinoDialogAction(
+                    isDestructiveAction: true,
+                    onPressed: () => Navigator.pop(ctx, true),
+                    child: const Text('Logout'),
+                  ),
+                ],
+              ),
+            );
+            if (confirmed == true && context.mounted) {
+              await context.read<AuthProvider>().logout();
+            }
+          },
+          child: const Icon(CupertinoIcons.square_arrow_right),
+        ),
       ),
-      body: SingleChildScrollView(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +250,7 @@ class _InvestmentDashboardScreenState extends State<InvestmentDashboardScreen> {
   }
 
   void _showInvestmentAdviceDialog() {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       builder: (context) => StatefulBuilder(builder: (context, setLocal) {
         Future<void> _fetchAdvice() async {
@@ -246,25 +274,18 @@ class _InvestmentDashboardScreenState extends State<InvestmentDashboardScreen> {
           _fetchAdvice();
         }
 
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: const Text(
-            'Investment Advice',
-            style: TextStyle(color: AppTheme.black),
-          ),
-          content: SizedBox(
-            width: 400,
+        return CupertinoAlertDialog(
+          title: const Text('Investment Advice'),
+          content: Padding(
+            padding: const EdgeInsets.only(top: 8),
             child: _loadingAdvice
-                ? const Center(child: CircularProgressIndicator())
-                : Text(
-                    _adviceText ?? '...',
-                    style: const TextStyle(color: AppTheme.black),
-                  ),
+                ? const CupertinoActivityIndicator()
+                : Text(_adviceText ?? '...'),
           ),
           actions: [
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Close', style: TextStyle(color: AppTheme.systemBlue)),
+              child: const Text('Close'),
             ),
           ],
         );
@@ -273,7 +294,7 @@ class _InvestmentDashboardScreenState extends State<InvestmentDashboardScreen> {
   }
 
   void _showStockAnalysisDialog() {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       builder: (context) => StatefulBuilder(builder: (context, setLocal) {
         Future<void> _fetchStock() async {
@@ -292,25 +313,18 @@ class _InvestmentDashboardScreenState extends State<InvestmentDashboardScreen> {
           _fetchStock();
         }
 
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: const Text(
-            'Stock Analysis (AAPL)',
-            style: TextStyle(color: AppTheme.black),
-          ),
-          content: SizedBox(
-            width: 400,
+        return CupertinoAlertDialog(
+          title: const Text('Stock Analysis (AAPL)'),
+          content: Padding(
+            padding: const EdgeInsets.only(top: 8),
             child: _loadingStock
-                ? const Center(child: CircularProgressIndicator())
-                : Text(
-                    _stockText ?? '...',
-                    style: const TextStyle(color: AppTheme.black),
-                  ),
+                ? const CupertinoActivityIndicator()
+                : Text(_stockText ?? '...'),
           ),
           actions: [
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Close', style: TextStyle(color: AppTheme.systemBlue)),
+              child: const Text('Close'),
             ),
           ],
         );

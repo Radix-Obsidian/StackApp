@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../auth/auth_store.dart';
 import '../models/stack_master_models.dart';
 import '../models/investment_models.dart';
 import '../models/community_models.dart';
@@ -8,6 +9,7 @@ class StackAppApiClient {
   // Use 127.0.0.1 to avoid some sandbox/ATS edge-cases with 'localhost'
   static const String baseUrl = 'http://127.0.0.1:8000';
   static const Duration timeout = Duration(seconds: 30);
+  static const int maxRetries = 3;
 
   // Stack Master Chat
   static Future<StackMasterResponse> chatWithStackMaster({
@@ -16,15 +18,16 @@ class StackAppApiClient {
     Map<String, dynamic>? context,
   }) async {
     try {
-      final response = await http.post(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.post(
         Uri.parse('$baseUrl/stack-master/chat'),
-        headers: {'Content-Type': 'application/json'},
+        headers: headers,
         body: jsonEncode({
           'user_id': userId,
           'message': message,
           'context': context ?? {},
         }),
-      ).timeout(timeout);
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -48,9 +51,10 @@ class StackAppApiClient {
     String riskTolerance = 'moderate',
   }) async {
     try {
-      final response = await http.post(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.post(
         Uri.parse('$baseUrl/stack-master/analyze-stack'),
-        headers: {'Content-Type': 'application/json'},
+        headers: headers,
         body: jsonEncode({
           'user_id': userId,
           'current_income': currentIncome,
@@ -60,7 +64,7 @@ class StackAppApiClient {
           'investment_goals': investmentGoals ?? [],
           'risk_tolerance': riskTolerance,
         }),
-      ).timeout(timeout);
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -82,9 +86,10 @@ class StackAppApiClient {
     String investmentType = 'stocks',
   }) async {
     try {
-      final response = await http.post(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.post(
         Uri.parse('$baseUrl/investment/advice'),
-        headers: {'Content-Type': 'application/json'},
+        headers: headers,
         body: jsonEncode({
           'user_id': userId,
           'amount_to_invest': amountToInvest,
@@ -92,7 +97,7 @@ class StackAppApiClient {
           'risk_tolerance': riskTolerance,
           'investment_type': investmentType,
         }),
-      ).timeout(timeout);
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -108,9 +113,11 @@ class StackAppApiClient {
   // Stock Analysis
   static Future<StockAnalysisResponse> analyzeStock(String ticker) async {
     try {
-      final response = await http.get(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.get(
         Uri.parse('$baseUrl/investment/stock-analysis/$ticker'),
-      ).timeout(timeout);
+        headers: headers,
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -132,9 +139,10 @@ class StackAppApiClient {
     List<String> goals = const [],
   }) async {
     try {
-      final response = await http.post(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.post(
         Uri.parse('$baseUrl/credit/building-plan'),
-        headers: {'Content-Type': 'application/json'},
+        headers: headers,
         body: jsonEncode({
           'user_id': userId,
           'current_score': currentScore,
@@ -142,7 +150,7 @@ class StackAppApiClient {
           'monthly_income': monthlyIncome,
           'goals': goals,
         }),
-      ).timeout(timeout);
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -158,13 +166,16 @@ class StackAppApiClient {
   // Community Challenges
   static Future<List<StackChallenge>> getStackChallenges() async {
     try {
-      final response = await http.get(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.get(
         Uri.parse('$baseUrl/community/stack-challenges'),
-      ).timeout(timeout);
+        headers: headers,
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final challenges = (data['challenges'] as List)
+        final list = (data['items'] ?? data['challenges'] ?? []) as List;
+        final challenges = list
             .map((json) => StackChallenge.fromJson(json))
             .toList();
         return challenges;
@@ -179,13 +190,16 @@ class StackAppApiClient {
   // Success Stories
   static Future<List<SuccessStory>> getSuccessStories() async {
     try {
-      final response = await http.get(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.get(
         Uri.parse('$baseUrl/community/success-stories'),
-      ).timeout(timeout);
+        headers: headers,
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final stories = (data['stories'] as List)
+        final list = (data['items'] ?? data['stories'] ?? []) as List;
+        final stories = list
             .map((json) => SuccessStory.fromJson(json))
             .toList();
         return stories;
@@ -200,13 +214,16 @@ class StackAppApiClient {
   // Education Topics
   static Future<List<EducationTopic>> getEducationTopics() async {
     try {
-      final response = await http.get(
+      final headers = await _headers();
+      final response = await _withRetry(() => http.get(
         Uri.parse('$baseUrl/education/topics'),
-      ).timeout(timeout);
+        headers: headers,
+      ).timeout(timeout));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final topics = (data['topics'] as List)
+        final list = (data['items'] ?? data['topics'] ?? []) as List;
+        final topics = list
             .map((json) => EducationTopic.fromJson(json))
             .toList();
         return topics;
@@ -231,3 +248,33 @@ class StackAppApiClient {
     }
   }
 }
+
+Future<Map<String, String>> _headers() async {
+  final token = await AuthStore.getToken();
+  return {
+    'Content-Type': 'application/json',
+    if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+  };
+}
+
+Future<http.Response> _withRetry(Future<http.Response> Function() fn) async {
+  int attempt = 0;
+  http.Response last;
+  while (true) {
+    try {
+      last = await fn();
+      if (_isTransient(last.statusCode) && attempt < StackAppApiClient.maxRetries - 1) {
+        attempt++;
+        await Future.delayed(Duration(milliseconds: 200 * (1 << attempt)));
+        continue;
+      }
+      return last;
+    } catch (_) {
+      if (attempt >= StackAppApiClient.maxRetries - 1) rethrow;
+      attempt++;
+      await Future.delayed(Duration(milliseconds: 200 * (1 << attempt)));
+    }
+  }
+}
+
+bool _isTransient(int code) => code == 408 || code == 429 || (code >= 500 && code < 600);

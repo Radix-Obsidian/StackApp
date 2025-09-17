@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/api/stackapp_api_client.dart';
 import '../../core/models/community_models.dart';
@@ -38,18 +40,16 @@ class _CommunityScreenState extends State<CommunityScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Community'),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: AppTheme.black,
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Community'),
       ),
-      body: DefaultTabController(
+      child: DefaultTabController(
         length: 2,
         child: Column(
           children: [
             Container(
-              color: Theme.of(context).colorScheme.surface,
+              color: Colors.white,
               child: const TabBar(
                 indicatorColor: AppTheme.brightGold,
                 labelColor: AppTheme.brightGold,
@@ -85,13 +85,13 @@ class _CommunityScreenState extends State<CommunityScreen> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: AppTheme.black,
+              color: CupertinoColors.black,
             ),
           ),
           const SizedBox(height: 16),
           
           if (_loadingChallenges)
-            const Center(child: CircularProgressIndicator())
+            const Center(child: CupertinoActivityIndicator())
           else ...[
             for (final ch in _challenges) ...[
               _buildChallengeCard(
@@ -127,7 +127,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
           const SizedBox(height: 16),
           
           if (_loadingStories)
-            const Center(child: CircularProgressIndicator())
+            const Center(child: CupertinoActivityIndicator())
           else ...[
             for (final s in _stories) ...[
               _buildSuccessStoryCard(
@@ -174,7 +174,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: AppTheme.black,
+                    color: CupertinoColors.black,
                   ),
                 ),
               ),
@@ -200,38 +200,30 @@ class _CommunityScreenState extends State<CommunityScreen> {
             description,
             style: const TextStyle(
               fontSize: 14,
-              color: AppTheme.gray,
+              color: CupertinoColors.systemGrey,
             ),
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              const Icon(
-                Icons.card_giftcard,
-                color: AppTheme.brightGold,
-                size: 16,
-              ),
+              const Icon(CupertinoIcons.gift_fill, color: CupertinoColors.activeOrange, size: 16),
               const SizedBox(width: 4),
               Text(
                 reward,
                 style: const TextStyle(
                   fontSize: 14,
-                  color: AppTheme.brightGold,
+                  color: CupertinoColors.activeOrange,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const Spacer(),
-              const Icon(
-                Icons.people,
-                color: AppTheme.gray,
-                size: 16,
-              ),
+              const Icon(CupertinoIcons.person_2_fill, color: CupertinoColors.systemGrey, size: 16),
               const SizedBox(width: 4),
               Text(
                 '$participants participants',
                 style: const TextStyle(
                   fontSize: 14,
-                  color: AppTheme.gray,
+                  color: CupertinoColors.systemGrey,
                 ),
               ),
             ],
@@ -239,12 +231,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
           const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
+            child: CupertinoButton.filled(
               onPressed: onJoin,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.brightGold,
-                foregroundColor: AppTheme.black,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               child: const Text('Join Challenge'),
             ),
           ),
@@ -365,25 +354,17 @@ class _CommunityScreenState extends State<CommunityScreen> {
   }
 
   void _showJoinChallengeDialog(String challengeName) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Text(
-          'Join $challengeName',
-          style: const TextStyle(color: AppTheme.white),
-        ),
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('Join $challengeName'),
         content: const Text(
           'This feature will connect to the StackApp backend to join community challenges and track your progress.',
-          style: TextStyle(color: AppTheme.white),
         ),
         actions: [
-          TextButton(
+          CupertinoDialogAction(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'OK',
-              style: TextStyle(color: AppTheme.brightGold),
-            ),
+            child: const Text('OK'),
           ),
         ],
       ),

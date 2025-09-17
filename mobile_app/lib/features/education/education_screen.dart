@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/api/stackapp_api_client.dart';
@@ -32,13 +33,11 @@ class _EducationScreenState extends State<EducationScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Financial Education'),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: AppTheme.black,
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Financial Education'),
       ),
-      body: SingleChildScrollView(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +91,7 @@ class _EducationScreenState extends State<EducationScreen> {
             const SizedBox(height: 16),
             
             if (_loading)
-              const Center(child: CircularProgressIndicator())
+              const Center(child: CupertinoActivityIndicator())
             else ...[
               for (final t in _topics) ...[
                 _buildEducationCard(
@@ -314,25 +313,17 @@ class _EducationScreenState extends State<EducationScreen> {
   }
 
   void _showEducationDialog(String topic) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Text(
-          topic,
-          style: const TextStyle(color: AppTheme.white),
-        ),
+      builder: (context) => CupertinoAlertDialog(
+        title: Text(topic),
         content: const Text(
           'This feature will provide comprehensive financial education content with interactive lessons and quizzes.',
-          style: TextStyle(color: AppTheme.white),
         ),
         actions: [
-          TextButton(
+          CupertinoDialogAction(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'OK',
-              style: TextStyle(color: AppTheme.brightGold),
-            ),
+            child: const Text('OK'),
           ),
         ],
       ),
