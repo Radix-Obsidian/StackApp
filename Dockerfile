@@ -1,20 +1,22 @@
-FROM python:3.11-slim
+FROM python:3.9-slim
 
 WORKDIR /app
 
-# Install system dependencies
+# Install minimal system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+    gcc \
+    python3-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
 COPY requirements.mvp.cloud.txt .
-RUN pip install --no-cache-dir -r requirements.mvp.cloud.txt
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.mvp.cloud.txt
 
 # Copy application code
 COPY finrobot/ ./finrobot/
-COPY stackapp_api_huggingface.py .
+COPY stackapp_api_render.py .
 COPY stackapp_config.json .
 COPY env.example.minimal .env.example
 
@@ -33,4 +35,4 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 EXPOSE 8000
 
 # Run the application with Gunicorn for production
-CMD ["gunicorn", "stackapp_api_huggingface:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "stackapp_api_render:app", "--workers", "2", "--bind", "0.0.0.0:8000"]

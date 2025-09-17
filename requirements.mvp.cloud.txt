@@ -1,37 +1,29 @@
-# StackApp MVP Cloud Requirements
-# Minimal dependencies for cloud deployment
+# StackApp MVP Cloud Requirements - Simplified for Render
+# No Rust dependencies to avoid compilation issues
 
 # Core FastAPI and web framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.2
+fastapi==0.95.2
+uvicorn==0.22.0
+pydantic==1.10.8
 python-multipart==0.0.6
 
-# FinRobot core components
-pyautogen>=0.8.0
-huggingface_hub==0.20.2
-transformers==4.35.2
+# FinRobot core components - simplified
+huggingface_hub==0.16.4
+requests==2.31.0
 
 # Financial data sources (essential only)
 finnhub-python==2.4.18
-yfinance==0.2.33
-requests==2.31.0
+yfinance==0.2.28
 
-# Data handling
-pandas==2.0.3
-numpy==1.26.4
+# Data handling - simplified
+pandas==1.5.3
+numpy==1.24.3
 
 # Environment and configuration
 python-dotenv==1.0.0
 
-# Security
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-
 # Production requirements
 gunicorn==21.2.0
-uvloop==0.19.0; sys_platform != "win32" and implementation_name == "cpython"
-httptools==0.6.1
 
-# Monitoring
-prometheus-client==0.19.0
+# Security - simplified
+python-jose==3.3.0
